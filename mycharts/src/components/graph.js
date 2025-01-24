@@ -3,74 +3,92 @@ import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   LineElement,
+  PointElement,
   CategoryScale,
   LinearScale,
   Tooltip,
   Legend,
 } from "chart.js";
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, Tooltip, Legend);
+ChartJS.register(
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+);
 
-const graph = () => {
+const Graph = () => {
   const data = {
-    labels: [0, 0.8, 1.6, 2.4, 3.2, 4], // X-axis labels (time in seconds)
     datasets: [
       {
         label: "Target",
-        data: [0, 0, 10, 10, 0, 0], // Y-axis values for Target
+        data: [
+          { x: 0, y: 10 },
+          { x: 1, y: 10 },
+          { x: 1, y: 8 },
+          { x: 1, y: 6 },
+          { x: 1, y: 4 },
+          { x: 1, y: 2 },
+          { x: 1, y: 0 },
+          { x: 1, y: -2 },
+          { x: 1, y: -4 },
+          { x: 1, y: -5 },
+        ],
         borderColor: "orange",
         borderWidth: 2,
         fill: false,
-        tension: 0.4,
-      },
-      {
-        label: "Left Eye",
-        data: [0, 1, 9, 9.5, 1, 0], // Y-axis values for Left Eye
-        borderColor: "red",
-        borderWidth: 2,
-        fill: false,
-        tension: 0.4,
-      },
-      {
-        label: "Right Eye",
-        data: [0, 0.5, 10, 9, 0.5, 0], // Y-axis values for Right Eye
-        borderColor: "blue",
-        borderWidth: 2,
-        fill: false,
-        tension: 0.4,
       },
     ],
   };
 
   const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
+    scales: {
+      x: {
+        type: "linear",
+        position: "bottom",
+        beginAtZero: true,
+        min: 0,
+        max: 4.5,
+        ticks: {
+          autoSkip: false,
+          stepSize: 0.75,
+        },
+        title: {
+          display: true,
+          text: "X-Axis (Predefined Labels)",
+        },
       },
+      y: {
+        display: true,
+        min: -6, // Include space for negative values
+        max: 12,
+        beginAtZero: true, // Ensures the y-axis begins at 0
+        position: "left", // Position the y-axis to the left
+        ticks: {
+          stepSize: 2,
+        },
+        grid: {
+          drawOnChartArea: true,
+          drawTicks: true,
+        },
+      },
+    },
+    plugins: {
       tooltip: {
         callbacks: {
           label: function (context) {
-            if (context.dataset.label === "Right Eye") {
-              return `Latency: 91 ms, Accuracy: 92%`;
-            }
-            return `${context.dataset.label}: ${context.raw}`;
+            const { x, y } = context.raw;
+            return `(${x}, ${y})`;
           },
         },
       },
     },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: "Time (s)",
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: "Eye Movement (°)",
-        },
+    layout: {
+      padding: {
+        top: 10,
+        bottom: 10,
       },
     },
   };
@@ -83,4 +101,4 @@ const graph = () => {
   );
 };
 
-export default graph;
+export default Graph;

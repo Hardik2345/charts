@@ -1,3 +1,5 @@
+import Graph from "./components/Graph";
+
 function App() {
   return (
     <div className="App">
@@ -15,6 +17,7 @@ function App() {
         >
           <div className="card-body">
             <h5 className="card-title">Chart</h5>
+            <Graph />
           </div>
         </div>
       </div>
