@@ -27,49 +27,88 @@ const Graph = () => {
         data: [
           { x: 0, y: 10 },
           { x: 1, y: 10 },
-          { x: 1, y: 8 },
-          { x: 1, y: 6 },
-          { x: 1, y: 4 },
-          { x: 1, y: 2 },
-          { x: 1, y: 0 },
-          { x: 1, y: -2 },
-          { x: 1, y: -4 },
           { x: 1, y: -5 },
+          { x: 1.9, y: -5 },
+          { x: 1.9, y: 7 },
+          { x: 3.2, y: 7 },
+          { x: 3.2, y: -3 },
+          { x: 4, y: -3 },
+          { x: 4, y: 7.9 },
+          { x: 5, y: 7.9 },
         ],
         borderColor: "orange",
         borderWidth: 2,
         fill: false,
+        pointRadius: 0,
+      },
+      {
+        label: "Right Eye",
+        data: [
+          { x: 0, y: 10 },
+          { x: 1.3, y: 10 },
+          { x: 1.3, y: -6 },
+          { x: 2.19, y: -6 },
+          { x: 2.19, y: 6.5 },
+          { x: 3.55, y: 6.5 },
+          { x: 3.55, y: -4 },
+          { x: 4.43, y: -4 },
+          { x: 4.43, y: 7.5 },
+          { x: 5, y: 7.5 },
+        ],
+        borderColor: "blue",
+        borderWidth: 2,
+        fill: false,
+        pointRadius: 0,
       },
     ],
   };
 
   const options = {
+    responsive: true,
+
     scales: {
       x: {
         type: "linear",
-        position: "bottom",
+        position: {
+          y: 0,
+        },
         beginAtZero: true,
         min: 0,
-        max: 4.5,
+        max: 5,
         ticks: {
           autoSkip: false,
           stepSize: 0.75,
+          callback: function (value, index, values) {
+            if (value === 0 || value === 5) {
+              return "";
+            }
+            return value;
+          },
         },
         title: {
           display: true,
-          text: "X-Axis (Predefined Labels)",
+        },
+
+        border: {
+          display: true,
+        },
+
+        grid: {
+          display: false,
+          drawOnChartArea: true,
+          drawTicks: true,
         },
       },
       y: {
         display: true,
-        min: -6, // Include space for negative values
+        min: -6.5,
         max: 12,
-        beginAtZero: true, // Ensures the y-axis begins at 0
-        position: "left", // Position the y-axis to the left
+        beginAtZero: false,
         ticks: {
           stepSize: 2,
         },
         grid: {
+          display: false,
           drawOnChartArea: true,
           drawTicks: true,
         },
@@ -82,6 +121,20 @@ const Graph = () => {
             const { x, y } = context.raw;
             return `(${x}, ${y})`;
           },
+        },
+      },
+      title: {
+        display: true,
+        text: "Grid Line Settings",
+      },
+      legend: {
+        labels: {
+          font: {
+            size: 14,
+          },
+          color: "black",
+          usePointStyle: true,
+          padding: 20,
         },
       },
     },

@@ -16,7 +16,6 @@ function App() {
           style={{ minWidth: "60rem", minHeight: "35rem" }}
         >
           <div className="card-body">
-            <h5 className="card-title">Chart</h5>
             <Graph />
           </div>
         </div>
