@@ -4,9 +4,9 @@ function App() {
       <div
         style={{
           display: "flex",
-          justifyContent: "center", // Centers horizontally
-          alignItems: "center", // Centers vertically
-          height: "100vh", // Makes the parent fill the viewport
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
         }}
       >
         <div
