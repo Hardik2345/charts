@@ -19,12 +19,20 @@ ChartJS.register(
   Legend
 );
 
-const Graph = () => {
+const Graph = (props) => {
+  const xstep =
+    (Math.max(...(props.data?.coordinates1?.map((point) => point.x) || [])) -
+      Math.min(...(props.data?.coordinates1?.map((point) => point.x) || []))) /
+    props.data?.coordinates1?.length;
+  const ystep =
+    (Math.max(...(props.data?.coordinates1?.map((point) => point.y) || [])) -
+      Math.min(...(props.data?.coordinates1?.map((point) => point.y) || []))) /
+    props.data?.coordinates1?.length;
   const data = {
     datasets: [
       {
         label: "Target",
-        data: [
+        data: props.data?.coordinates1 || [
           { x: 0, y: 10 },
           { x: 1, y: 10 },
           { x: 1, y: -5 },
@@ -37,35 +45,35 @@ const Graph = () => {
           { x: 5, y: 7.9 },
         ],
         borderColor: "orange",
-        borderWidth: 2,
-        fill: false,
+        borderWidth: 4,
         pointRadius: 0,
+        tension: 0.4,
       },
-      {
-        label: "Right Eye",
-        data: [
-          { x: 0, y: 10 },
-          { x: 1.3, y: 10 },
-          { x: 1.3, y: -6 },
-          { x: 2.19, y: -6 },
-          { x: 2.19, y: 6.5 },
-          { x: 3.55, y: 6.5 },
-          { x: 3.55, y: -4 },
-          { x: 4.43, y: -4 },
-          { x: 4.43, y: 7.5 },
-          { x: 5, y: 7.5 },
-        ],
-        borderColor: "blue",
-        borderWidth: 2,
-        fill: false,
-        pointRadius: 0,
-      },
+      // {
+      //   label: "Right Eye",
+      //   data: props.data?.coordinates1 || [
+      //     { x: 0, y: 10 },
+      //     { x: 1.3, y: 10 },
+      //     { x: 1.3, y: -6 },
+      //     { x: 2.19, y: -6 },
+      //     { x: 2.19, y: 6.5 },
+      //     { x: 3.55, y: 6.5 },
+      //     { x: 3.55, y: -4 },
+      //     { x: 4.43, y: -4 },
+      //     { x: 4.43, y: 7.5 },
+      //     { x: 5, y: 7.5 },
+      //   ],
+      //   borderColor: "blue",
+      //   borderWidth: 4,
+      //   fill: false,
+      //   pointRadius: 0,
+      //   tension: 0.4,
+      // },
     ],
   };
 
   const options = {
     responsive: true,
-
     scales: {
       x: {
         type: "linear",
@@ -73,13 +81,32 @@ const Graph = () => {
           y: 0,
         },
         beginAtZero: true,
-        min: 0,
-        max: 5,
+        min:
+          Math.min(
+            ...(props.data?.coordinates1?.map((point) => point.x) || [])
+          ) || 0,
+        max:
+          (
+            Math.max(
+              ...(props.data?.coordinates1?.map((point) => point.x) || [])
+            ) + xstep
+          ).toFixed(2) || 5,
         ticks: {
           autoSkip: false,
-          stepSize: 0.75,
-          callback: function (value, index, values) {
-            if (value === 0 || value === 5) {
+          stepSize: xstep.toFixed(2),
+          callback: function (value) {
+            if (
+              value ===
+                (Math.min(
+                  ...(props.data?.coordinates1?.map((point) => point.x) || [])
+                ) || 0) ||
+              value ===
+                ((
+                  Math.max(
+                    ...(props.data?.coordinates1?.map((point) => point.x) || [])
+                  ) + xstep
+                ).toFixed(2) || 5)
+            ) {
               return "";
             }
             return value;
@@ -101,11 +128,18 @@ const Graph = () => {
       },
       y: {
         display: true,
-        min: -6.5,
-        max: 12,
+        min:
+          Math.min(
+            ...(props.data?.coordinates1?.map((point) => point.y) || [])
+          ) - ystep || -6.5,
+        max:
+          Math.max(
+            ...(props.data?.coordinates1?.map((point) => point.y) || [])
+          ) + ystep || 12,
         beginAtZero: false,
         ticks: {
-          stepSize: 2,
+          autoSkip: false,
+          stepSize: ystep,
         },
         grid: {
           display: false,
@@ -147,8 +181,10 @@ const Graph = () => {
   };
 
   return (
-    <div>
-      <h3>Eye Movement</h3>
+    <div style={{ padding: "20px" }}>
+      <h3 style={{ marginBottom: "20px", textAlign: "center" }}>
+        Eye Movement
+      </h3>
       <Line data={data} options={options} />
     </div>
   );

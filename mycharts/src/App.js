@@ -1,4 +1,5 @@
 import Graph from "./components/Graph";
+import { data } from "./data";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           style={{ minWidth: "60rem", minHeight: "35rem" }}
         >
           <div className="card-body">
-            <Graph />
+            <Graph data={data.data} />
           </div>
         </div>
       </div>
